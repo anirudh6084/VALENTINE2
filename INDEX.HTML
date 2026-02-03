@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Khushi (cutu) 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Comic Sans MS', cursive;
+    background: linear-gradient(135deg, #fff1f7, #fffbe6);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    max-width: 380px;
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 { color: #ff4d6d; }
+  p { font-size: 18px; }
+
+  button {
+    font-size: 18px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  #yesBtn {
+    background: #ff4d6d;
+    color: white;
+    margin-right: 10px;
+  }
+
+  #noBtn {
+    background: #adb5bd;
+    color: white;
+    position: absolute;
+  }
+
+  /* BIG FLOATING HEARTS & SUNFLOWERS */
+  .heart {
+    position: fixed;
+    bottom: -60px;
+    font-size: 64px; /* BIG */
+    pointer-events: none;
+    animation: floatUp 6s linear forwards;
+    opacity: 0.9;
+    z-index: 1;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.8); }
+    100% { transform: translateY(-110vh) scale(1.2); }
+  }
+
+  /* HEART EXPLOSION */
+  .explosion-heart {
+    position: absolute;
+    font-size: 40px;
+    animation: explode 1.2s ease-out forwards;
+    pointer-events: none;
+  }
+
+  @keyframes explode {
+    0% { transform: scale(0); opacity: 1; }
+    100% {
+      transform: translate(var(--x), var(--y)) scale(1.5);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="ilikemebetter.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <h1>Khushi (cutu) 💛🌻</h1>
+  <p id="message">
+    Will you be my Valentine? 💖<br>
+    You can’t escape 😌
+  </p>
+  <button id="yesBtn" onclick="yesClicked(event)">YES 💖</button>
+  <button id="noBtn" onmouseover="noClicked()">No 🙄</button>
+</div>
+
+<script>
+  const cuteMessages = [
+    "WHY ARE YOU CHASING IT 😭",
+    "Khushi pls 🥺🌻",
+    "The NO is scared of you",
+    "Just say YES already 😌",
+    "Sunflowers say yes 🌻",
+    "My heart already won 💕"
+  ];
+
+  let msgIndex = 0;
+  let yesScale = 1;
+
+  function noClicked() {
+    const noBtn = document.getElementById("noBtn");
+    // CRAZY movement
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
+
+    document.getElementById("message").innerText = cuteMessages[msgIndex];
+    msgIndex = (msgIndex + 1) % cuteMessages.length;
+
+    // YES button grows more
+    yesScale += 0.2;
+    document.getElementById("yesBtn").style.transform = `scale(${yesScale})`;
+  }
+
+  function yesClicked(e) {
+    explodeHearts(e.clientX, e.clientY);
+
+    setTimeout(() => {
+      document.body.innerHTML = `
+        <div style="text-align:center; font-family:'Comic Sans MS', cursive;">
+          <h1 style="color:#ff4d6d; font-size:44px;">💖 KHUSHI SAID YES 💖</h1>
+          <h2>You’re my Valentine 🌻</h2>
+          <p>I like me better… when I’m with you 😌</p>
+          <p>Screenshot this 📸💛</p>
+        </div>
+      `;
+    }, 900);
+  }
+
+  function explodeHearts(x, y) {
+    for (let i = 0; i < 30; i++) {
+      const heart = document.createElement("div");
+      heart.className = "explosion-heart";
+      heart.innerText = Math.random() > 0.5 ? "💖" : "🌻";
+      heart.style.left = x + "px";
+      heart.style.top = y + "px";
+      heart.style.setProperty("--x", (Math.random()*400 - 200) + "px");
+      heart.style.setProperty("--y", (Math.random()*400 - 200) + "px");
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1200);
+    }
+  }
+
+  function startMusic() {
+    document.getElementById("bgMusic").play();
+  }
+
+  // FLOATING HEARTS & SUNFLOWERS
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = Math.random() > 0.5 ? "💖" : "🌻";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+
+  // INITIAL HEARTS
+  for (let i = 0; i < 10; i++) {
+    setTimeout(createHeart, i * 300);
+  }
+
+  // CONTINUOUS HEARTS
+  setInterval(createHeart, 400);
+
+</script>
+
+</body>
+</html>
